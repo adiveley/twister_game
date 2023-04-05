@@ -3,3 +3,6 @@
 
 class Player:
     """One of the people playing the game"""
+
+class Board:
+    """The board the players use for the game Twister."""
