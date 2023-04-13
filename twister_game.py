@@ -15,8 +15,8 @@ class Player:
         
     
     
-    def __init__(self, name):
-        """Initializes a person object
+    def __init__(self, name, right_foot, left_foot, right_hand = 0, left_hand = 0):
+        """Initializes a person object. Uses optional parameters.
         
         Args:
             name(str): the name of the player
@@ -25,7 +25,7 @@ class Player:
             Initializes attribute name,spinner_colors,spinner_body_parts,right_foot,left_foot,right_hand,left_hand
         """
      def turn(self,name):
-        """Executes a player turn
+        """Executes a player turn. Uses sequence unpacking.
         
         Args:
             name(str): Name of the current player
@@ -35,7 +35,7 @@ class Player:
             Prompts the current player to spin for a body part and a color.
         """
      def spinner(self,spinner_colors,spinner_body_parts):
-        """The spinner randomly selects a body part that the player will move and a color that the player will land on. We will be using a docstring in this method
+        """The spinner randomly selects a body part that the player will move and a color that the player will land on. We will be using a f-string in this method
         
         Args:
             spinner_colors(list of strings):A list containing all the four possible colors(red,blue,green,yellow,spinner_choice) a player can move to.
@@ -43,21 +43,49 @@ class Player:
         Side effects:
             print the value that the spinner gives out. Alters the spinner list throught the use of append.
             """
-     def elimination(self):
-        """This method determines when a player loses."""
+     def elimination(self, player):
+        """This method determines when a player loses. We will use a conditional expression within this method.
+        
+        Args:
+            player (Player object): The player who fell and got eliminated.
+            
+        Side effects:
+            Prints "Player lost and Other_Player won."
+        """
+        
 
 class Board:
     """The board the players use for the game Twister.
     
+    Attributes:
+        board (dictionary): Dictionary that represents each circle on the board and whether or not it is occupied.
+        player (Player object): A player participating in the game.
+        
     """
     
-    def __init__(self,board):
-        """Initializes a Board object"""
+    def __init__(self, board):
+        """Initializes a Board object.
+        
+        Args:
+            board (dictionary): Dictionary that represents each circle on the board and whether or not it is occupied.
+        """
     
     
         
     def __str__(self):
         """"Returns a representation of the board. We will be using a magic method in this method.""""
+        
+    def board_adjustment(self, player):
+        """Keeps track of where the players are on the board. Uses dictionary comprehension.
+        
+        Args:
+            player (Player object): A player participating in the game.
+            
+        Side effects:
+            Adjusts the dictionary board.
+        
+        
+        """
         
 
 
