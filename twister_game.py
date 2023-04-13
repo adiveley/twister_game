@@ -21,8 +21,7 @@ class Board:
     def __init__(self,board):
         """Initializes a Board object"""
 
-class Rules:
-    """The conditions the player must follow in order to play the game"""
+
     
     
     
