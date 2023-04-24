@@ -15,7 +15,8 @@ class Player:
     
     def __init__(self, name, right_foot, left_foot, right_hand = 0, left_hand = 0):
         """Initializes a person object. Uses optional parameters.
-        
+        self.name = name
+       
         Args:
             name(str): the name of the player
             
