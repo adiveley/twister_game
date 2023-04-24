@@ -1,5 +1,5 @@
 """"A twister game written in python that allows multiple people to play twister"""
-
+import random
 
 class Player:
     """One of the people playing the game
@@ -22,9 +22,6 @@ class Player:
         Side effects:
             Initializes attribute name,right_foot,left_foot,right_hand,left_hand
         """
-        
-        self.name = name
-        
      def turn(self,name):
         """Executes a player turn. Uses sequence unpacking.
         
@@ -58,6 +55,9 @@ class Board:
         Side effects:
              Initializes attribute board,spinner_colors,spinner_body_parts
         """
+        self.spinner_colors = ["green", "yellow", "blue", "red", "spinner_choice"]
+        self.spinner_body_parts = ["right_foot", "left_foot", "right_hand", "left_hand", "spinner_choice"]
+        
      def spinner(self,spinner_colors,spinner_body_parts):
         """The spinner randomly selects a body part that the player will move and a color that the player will land on. We will be using a f-string in this method
         
@@ -66,8 +66,32 @@ class Board:
             spinner_body_parts(list of strings):A list containing the four possible body parts(left/right hand,left/right foot,sinner_choice) that a player can place on the board
             
         Side effects:
-            print the value that the spinner gives out. Alters the spinner list throught the use of append.
+            print the value that the spinner gives out. 
             """
+        
+        color =  random.choice(spinner_colors)
+       
+        if color == spinner_colors[4]:
+            myinput = input("Enter the color of your choice: ")
+            if myinput not in spinner_colors:
+                raise ValueError("Not a valid color.")
+            myinput = input("Enter the color of your choice: ")
+            color = myinput
+           
+        body_part = random.choice(spinner_body_parts)
+        
+        if body_part == spinner_body_parts[4]:
+            myinput = input("Enter the body part of your choice: ")
+            if myinput not in spinner_body_parts:
+                raise ValueError("Not a valid body part.")
+            myinput = input("Enter the body part of your choice: ")
+            body_part = myinput
+            
+         print(f"Move your {body_part} to an open {color} circle")
+       
+        # return 
+        
+        
      def elimination(self, player):
         """This method determines when a player loses. We will use a conditional expression within this method.
         
@@ -89,40 +113,13 @@ class Board:
         
         
         """
-        board={"green1":"open",
-               "green2":"open",
-               "green3":"open",
-               "green4":"open",
-               "green5":"open",
-               "green6":"open",
-               "yellow1":"open",
-               "yellow2":"open",
-               "yellow3":"open",
-               "yellow4":"open",
-               "yellow5":"open",
-               "yellow6":"open",
-               "blue1":"open",
-               "blue2":"open",
-               "blue3":"open",
-               "blue4":"open",
-               "blue5":"open",
-               "blue6":"open",
-               "red1":"open",
-               "red2":"open",
-               "red3":"open",
-               "red4":"open",
-               "red5":"open",
-               "red6":"open",
-                }
-            
-            
     
         
     def __str__(self):
         """"Returns a representation of the board. We will be using a magic method in this method.""""
         
 
-
+#main function
     
     
     
