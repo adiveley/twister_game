@@ -22,7 +22,8 @@ class Player:
         Side effects:
             Initializes attribute name,right_foot,left_foot,right_hand,left_hand
         """
-     def turn(self,name):
+        
+    def turn(self,name):
         """Executes a player turn. Uses sequence unpacking.
         
         Args:
@@ -55,7 +56,7 @@ class Board:
         Side effects:
              Initializes attribute board,spinner_colors,spinner_body_parts
         """
-     def spinner(self,spinner_colors,spinner_body_parts):
+    def spinner(self,spinner_colors,spinner_body_parts):
         """The spinner randomly selects a body part that the player will move and a color that the player will land on. We will be using a f-string in this method
         
         Args:
@@ -65,7 +66,7 @@ class Board:
         Side effects:
             print the value that the spinner gives out. Alters the spinner list throught the use of append.
             """
-     def elimination(self, player):
+    def elimination(self, player):
         """This method determines when a player loses. We will use a conditional expression within this method.
         
         Args:
@@ -86,10 +87,34 @@ class Board:
         
         
         """
-    
+        board={"green1":"open",
+               "green2":"open",
+               "green3":"open",
+               "green4":"open",
+               "green5":"open",
+               "green6":"open",
+               "yellow1":"open",
+               "yellow2":"open",
+               "yellow3":"open",
+               "yellow4":"open",
+               "yellow5":"open",
+               "yellow6":"open",
+               "blue1":"open",
+               "blue2":"open",
+               "blue3":"open",
+               "blue4":"open",
+               "blue5":"open",
+               "blue6":"open",
+               "red1":"open",
+               "red2":"open",
+               "red3":"open",
+               "red4":"open",
+               "red5":"open",
+               "red6":"open",
+                }
         
     def __str__(self):
-        """"Returns a representation of the board. We will be using a magic method in this method.""""
+        """"Returns a representation of the board. We will be using a magic method in this method."""
         
 
 
