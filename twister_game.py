@@ -89,6 +89,33 @@ class Board:
         
         
         """
+        board={"green1":"open",
+               "green2":"open",
+               "green3":"open",
+               "green4":"open",
+               "green5":"open",
+               "green6":"open",
+               "yellow1":"open",
+               "yellow2":"open",
+               "yellow3":"open",
+               "yellow4":"open",
+               "yellow5":"open",
+               "yellow6":"open",
+               "blue1":"open",
+               "blue2":"open",
+               "blue3":"open",
+               "blue4":"open",
+               "blue5":"open",
+               "blue6":"open",
+               "red1":"open",
+               "red2":"open",
+               "red3":"open",
+               "red4":"open",
+               "red5":"open",
+               "red6":"open",
+                }
+            
+            
     
         
     def __str__(self):
