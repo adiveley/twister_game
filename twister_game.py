@@ -71,8 +71,7 @@ class Board:
         Side effects:
             print the value that the spinner gives out. 
             """
-    def elimination(self, player):
-        
+            
         color =  random.choice(self.spinner_colors)
        
         if color == self.spinner_colors[4]:
