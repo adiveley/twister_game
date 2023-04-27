@@ -1,7 +1,7 @@
 """"A twister game written in python that allows multiple people to play twister"""
 import random
 
-class Player:
+class Players:
     """One of the people playing the game
     
     Attributes:
@@ -13,28 +13,54 @@ class Player:
         
     
     
-    def __init__(self, name, right_foot, left_foot, right_hand = 0, left_hand = 0):
+    def __init__(self, player1, player2):
         """Initializes a person object. Uses optional parameters.
         
         Args:
             name(str): the name of the player
             
-        Side effects:
+        Side effects: 
             Initializes attribute name,right_foot,left_foot,right_hand,left_hand
         """
+        self.player1_current_position = [("right_foot", "blue1"), ("left_foot", "yellow1"), ("right_hand", ""), ("left_hand", "")]
+        self.player2_current_position = [("right_foot", "blue6"), ("left_foot", "yellow6"), ("right_hand", ""), ("left_hand", "")]
+        self.player1 = player1
+        self.player2 = player2
+        #player1.left_foot = 
+        #player1.right_foot = 
+        #player2.left_foot = 
+        #player2.right_foot = 
+        
         self.spinner_colors = ["green", "yellow", "blue", "red", "spinner_choice"]
         self.spinner_body_parts = ["right_foot", "left_foot", "right_hand", "left_hand", "spinner_choice"]
         
-    def turn(self,name):
-        """Executes a player turn. Uses sequence unpacking.
+    def turn(self, player):
+        """Executes a player turn. Uses f string.
         
         Args:
-            name(str): Name of the current player
+            player(str): Name of the current player
         Raises:
-            ValueError: body part and color selected are not found within the spinnner_color or spinner_body_parts
+            ValueError: User did not type color or body part.
         Side effects:
             Prompts the current player to spin for a body part and a color.
+            Prints {self.player} move your {spin.body_part} to an open {spin.color} circle.
         """
+        
+        body_part = input("Type 'body part' to spin for a body part: ")
+        if body_part != "body part":
+            raise ValueError("You must type body part.")
+       
+        color = input("Type 'color' to spin for a color: ")
+        
+        if color != "color":
+            raise ValueError("You must type color.")
+        
+        spin = Board()
+        spin.spinner()
+        
+        print(f"{self.player} move your {spin.body_part} to an open {spin.color} circle.")
+        
+        
     
         
 
@@ -61,17 +87,23 @@ class Board:
         self.spinner_colors = ["green", "yellow", "blue", "red", "spinner_choice"]
         self.spinner_body_parts = ["right_foot", "left_foot", "right_hand", "left_hand", "spinner_choice"]
         
-    def spinner(self,spinner_colors,spinner_body_parts):
-        """The spinner randomly selects a body part that the player will move and a color that the player will land on. We will be using a f-string in this method
+    def spinner(self,spinner_colors, spinner_body_parts):
+        """The spinner randomly selects a body part that the player will move and a color that the player will land on. Sequence unpacking and list comprehension.
         
         Args:
             spinner_colors(list of strings):A list containing all the four possible colors(red,blue,green,yellow,spinner_choice) a player can move to.
             spinner_body_parts(list of strings):A list containing the four possible body parts(left/right hand,left/right foot,sinner_choice) that a player can place on the board
             
-        Side effects:
-            print the value that the spinner gives out. 
+        Raises:
+            ValueError: body part and color selected are not found within the spinnner_color or spinner_body_parts
+         
+        Returns:
+            body_part (str): The body part that the spinner landed on or spinner's choice.
+            color (str): The color that the spinner landed on or spinner's choice.
+            
             """
             
+        
         color =  random.choice(self.spinner_colors)
        
         if color == self.spinner_colors[4]:
@@ -90,9 +122,20 @@ class Board:
             myinput = input("Enter the body part of your choice: ")
             body_part = myinput
             
-        print(f"Move your {body_part} to an open {color} circle")
+        player = Players()
+        
+        ([(player.player1_current_position.remove(player1_current_position[0]) and player.player1_current_position.append((body_part, color))) 
+          for player.body_part, player.color in  player.player1_current_position if body_part == "right_foot"])
+        ([(player.player1_current_position.remove(player1_current_position[1]) and player.player1_current_position.append((body_part, color))) 
+          for player.body_part, player.color in  player.player1_current_position if body_part == "left_foot"])
+        ([(player.player1_current_position.remove(player1_current_position[2]) and player.player1_current_position.append((body_part, color))) 
+          for player.body_part, player.color in  player.player1_current_position if body_part == "right_hand"])
+        ([(player.player1_current_position.remove(player1_current_position[3]) and player.player1_current_position.append((body_part, color))) 
+          for player.body_part, player.color in  player.player1_current_position if body_part == "left_hand"])
+        
+        return body_part, color
        
-        # return 
+        
         
         
     def elimination(self, player):
@@ -122,18 +165,18 @@ class Board:
                "green4":"open",
                "green5":"open",
                "green6":"open",
-               "yellow1":"open",
+               "yellow1":"closed",
                "yellow2":"open",
                "yellow3":"open",
                "yellow4":"open",
                "yellow5":"open",
-               "yellow6":"open",
-               "blue1":"open",
+               "yellow6":"closed",
+               "blue1":"closed",
                "blue2":"open",
                "blue3":"open",
                "blue4":"open",
                "blue5":"open",
-               "blue6":"open",
+               "blue6":"closed",
                "red1":"open",
                "red2":"open",
                "red3":"open",
@@ -147,6 +190,7 @@ class Board:
         
 
 #main function
+# call spinner
     
     
     
