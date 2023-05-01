@@ -87,30 +87,30 @@ class Board:
         self.spinner_colors = ["green", "yellow", "blue", "red", "spinner_choice"]
         self.spinner_body_parts = ["right_foot", "left_foot", "right_hand", "left_hand", "spinner_choice"]
         
-        self.position = {"green1":(1,4),
-               "green2":(2,4),
-               "green3":(3,4),
-               "green4": (4,4),
-               "green5":(5,4),
-               "green6":(6,4),
-               "yellow1":(1,3),
-               "yellow2":(2,3),
-               "yellow3":(3,3),
-               "yellow4":(4,3),
-               "yellow5":(5,3),
-               "yellow6":(6,3),
-               "blue1":(1,2),
-               "blue2":(2,2),
-               "blue3":(3,2),
-               "blue4":(4,2),
-               "blue5":(5,2),
-               "blue6":(6,2),
-               "red1":(1,1),
-               "red2":(2,1),
-               "red3":(3,1),
-               "red4":(4,1),
-               "red5":(5,1),
-               "red6":(6,1),
+        self.position = {"green1":[1,4],
+               "green2":[2,4],
+               "green3":[3,4],
+               "green4": [4,4],
+               "green5":[5,4],
+               "green6":[6,4],
+               "yellow1":[1,3],
+               "yellow2":[2,3],
+               "yellow3":[3,3],
+               "yellow4":[4,3],
+               "yellow5":[5,3],
+               "yellow6":[6,3],
+               "blue1":[1,2],
+               "blue2":[2,2],
+               "blue3":[3,2],
+               "blue4":[4,2],
+               "blue5":[5,2],
+               "blue6":[6,2],
+               "red1":[1,1],
+               "red2":[2,1],
+               "red3":[3,1],
+               "red4":[4,1],
+               "red5":[5,1],
+               "red6":[6,1],
                 }
         
     def spinner(self,spinner_colors, spinner_body_parts):
@@ -178,6 +178,8 @@ class Board:
         
         max_feet = 3
         max_hands = 2
+        
+        
         
         for key,value in self.position:
             abs_expression_horiz = abs(value[1] - ___)
