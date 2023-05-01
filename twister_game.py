@@ -22,8 +22,8 @@ class Players:
         Side effects: 
             Initializes attribute name,right_foot,left_foot,right_hand,left_hand
         """
-        self.player1_current_position = [("right_foot", "blue1"), ("left_foot", "yellow1"), ("right_hand", ""), ("left_hand", "")]
-        self.player2_current_position = [("right_foot", "blue6"), ("left_foot", "yellow6"), ("right_hand", ""), ("left_hand", "")]
+        self.player1_current_position = [["right_foot", "blue1"], ["left_foot", "yellow1"], ["right_hand", ""], ["left_hand", ""]]
+        self.player2_current_position = [["right_foot", "blue6"], ["left_foot", "yellow6"], ["right_hand", ""], ["left_hand", ""]]
         self.player1 = player1
         self.player2 = player2
         #player1.left_foot = 
@@ -45,6 +45,8 @@ class Players:
             Prompts the current player to spin for a body part and a color.
             Prints {self.player} move your {spin.body_part} to an open {spin.color} circle.
         """
+        # We need to append the current position for wherever the player is moving to. Havwe the player choose a number to reresent
+        # were they are moving to 
         
         body_part = input("Type 'body part' to spin for a body part: ")
         if body_part != "body part":
@@ -113,6 +115,7 @@ class Board:
                "red6":[6,1],
                 }
         
+        
     def spinner(self,spinner_colors, spinner_body_parts):
         """The spinner randomly selects a body part that the player will move and a color that the player will land on. Sequence unpacking and list comprehension.
         
@@ -150,13 +153,13 @@ class Board:
             
         player = Players()
         
-        ([(player.player1_current_position.remove(player1_current_position[0]) and player.player1_current_position.append((body_part, color))) 
+        ([(player.player1_current_position.remove(player.player1_current_position[0]) and player.player1_current_position.append((body_part, color))) 
           for player.body_part, player.color in  player.player1_current_position if body_part == "right_foot"])
-        ([(player.player1_current_position.remove(player1_current_position[1]) and player.player1_current_position.append((body_part, color))) 
+        ([(player.player1_current_position.remove(player.player1_current_position[1]) and player.player1_current_position.append((body_part, color))) 
           for player.body_part, player.color in  player.player1_current_position if body_part == "left_foot"])
-        ([(player.player1_current_position.remove(player1_current_position[2]) and player.player1_current_position.append((body_part, color))) 
+        ([(player.player1_current_position.remove(player.player1_current_position[2]) and player.player1_current_position.append((body_part, color))) 
           for player.body_part, player.color in  player.player1_current_position if body_part == "right_hand"])
-        ([(player.player1_current_position.remove(player1_current_position[3]) and player.player1_current_position.append((body_part, color))) 
+        ([(player.player1_current_position.remove(player.player1_current_position[3]) and player.player1_current_position.append((body_part, color))) 
           for player.body_part, player.color in  player.player1_current_position if body_part == "left_hand"])
         
         return body_part, color
@@ -179,7 +182,7 @@ class Board:
         max_feet = 3
         max_hands = 2
         
-        
+        for 
         
         for key,value in self.position:
             abs_expression_horiz = abs(value[1] - ___)
@@ -234,6 +237,7 @@ class Board:
 
 #main function
 # call spinner
+# we will be using composition for htis method
     
     
     
