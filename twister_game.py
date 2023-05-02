@@ -48,22 +48,65 @@ class Players:
         # We need to append the current position for wherever the player is moving to. Havwe the player choose a number to reresent
         # were they are moving to 
         
-        body_part = input("Type 'body part' to spin for a body part: ")
-        if body_part != "body part":
-            raise ValueError("You must type body part.")
-       
-        color = input("Type 'color' to spin for a color: ")
         
-        if color != "color":
-            raise ValueError("You must type color.")
         
+        turn_spin = input("Type 'spin' to spin the spinner: ")
+        if turn_spin != "spin":
+            raise ValueError("You must type spin to spin the spinner.")
+    
         spin = Board()
         spin.spinner()
+       
+        number=input(int("Enter a number 1-6 to represent the position of the color you want to move to."))
+        if number<1 or number>6:
+            raise ValueError("You did not enter a valid number")
+        else:
+            str(number)
+            color_position=spin.color+number #concat the color and the position of the color
+        
+        for board in spin.board_adjustment:
+            if board[color_position]=="closed":
+                raise ValueError("This position is already closed please choose somewhere another number.")
+                
+                
+        
+        
+        
+        
+        
         
         print(f"{self.player} move your {spin.body_part} to an open {spin.color} circle.")
         
         
-    
+        
+        for body_parts,position_colors in self.player1_current_position:
+            empty_list=[]
+            if spin.spinner_body_parts=="right_foot":
+                old_position=self.player1_current_position.pop(0)
+                empty_list.append("right_foot")
+                empty_list.append(color_position)
+                self.player1_current_position[0]=empty_list
+            if spin.spinner_body_parts=="left_foot":
+                old_position=self.player1_current_position.pop(1)
+                empty_list.append("left_foot")
+                empty_list.append(color_position)
+                self.player1_current_position[1]=empty_list
+            if spin.spinner_body_parts=="right_hand":
+                old_position=self.player1_current_position.pop(2)
+                empty_list.append("right_hand")
+                empty_list.append(color_position)
+                self.player1_current_position[2]=empty_list
+            if spin.spinner_body_parts=="left_hand":
+                old_position=self.player1_current_position.pop(3)
+                empty_list.append("left_hand")
+                empty_list.append(color_position)
+                self.player1_current_position[3]=empty_list
+
+
+# green1, green6
+        
+            spin.board_adjustment
+            
         
 
 class Board:
@@ -116,7 +159,7 @@ class Board:
                 }
         
         
-    def spinner(self,spinner_colors, spinner_body_parts):
+    def spinner(self):
         """The spinner randomly selects a body part that the player will move and a color that the player will land on. Sequence unpacking and list comprehension.
         
         Args:
@@ -151,16 +194,8 @@ class Board:
             myinput = input("Enter the body part of your choice: ")
             body_part = myinput
             
-        player = Players()
         
-        ([(player.player1_current_position.remove(player.player1_current_position[0]) and player.player1_current_position.append((body_part, color))) 
-          for player.body_part, player.color in  player.player1_current_position if body_part == "right_foot"])
-        ([(player.player1_current_position.remove(player.player1_current_position[1]) and player.player1_current_position.append((body_part, color))) 
-          for player.body_part, player.color in  player.player1_current_position if body_part == "left_foot"])
-        ([(player.player1_current_position.remove(player.player1_current_position[2]) and player.player1_current_position.append((body_part, color))) 
-          for player.body_part, player.color in  player.player1_current_position if body_part == "right_hand"])
-        ([(player.player1_current_position.remove(player.player1_current_position[3]) and player.player1_current_position.append((body_part, color))) 
-          for player.body_part, player.color in  player.player1_current_position if body_part == "left_hand"])
+        
         
         return body_part, color
        
@@ -182,18 +217,18 @@ class Board:
         max_feet = 3
         max_hands = 2
         
-        for 
+         
         
         for key,value in self.position:
-            abs_expression_horiz = abs(value[1] - ___)
-            abs_expression_vert = abs(value[0] - ___)
-            status = "eliminated" if abs_expression > max_feet else "safe"
+            abs_expression_horiz = abs(value[1] - player.old_position[-1]) # will come back to this
+            abs_expression_vert = abs(value[0] - player.old_position[-1])
 
-            
-        for player.player1_current_position[2:] in :
-            abs_expression = 
-            status = "eliminated" if abs_expression > max_hands else "safe"        
         
+        for x in player.player1_current_position:
+            if player.player1_current_position[2:]:
+                status = "eliminated" if abs_expression_horiz > max_hands or abs_expression_vert> max_hands else "safe"       
+            else:
+                status = "eliminated" if abs_expression_horiz > max_feet or abs_expression_vert> max_feet else "safe"  
     def board_adjustment(self, player):
         """Keeps track of where the players are on the board. Uses dictionary comprehension.
         
@@ -230,10 +265,14 @@ class Board:
                "red5":"open",
                "red6":"open",
                 }
-        
+        player=Players()
+        player.turn()
+        board[player.color_position]="closed"
+        board[player.old_position]="open"
+            
     def __str__(self):
         """"Returns a representation of the board. We will be using a magic method in this method."""
-        
+
 
 #main function
 # call spinner
