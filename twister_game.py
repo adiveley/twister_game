@@ -1,6 +1,8 @@
 """"A twister game written in python that allows multiple people to play twister"""
 import random
 
+
+
 class Players:
     """One of the people playing the game
     
@@ -26,16 +28,14 @@ class Players:
         self.player2_current_position = [["right_foot", "blue6"], ["left_foot", "yellow6"], ["right_hand", ""], ["left_hand", ""]]
         self.player1 = player1
         self.player2 = player2
-        #player1.left_foot = 
-        #player1.right_foot = 
-        #player2.left_foot = 
-        #player2.right_foot = 
-        
         self.spinner_colors = ["green", "yellow", "blue", "red", "spinner_choice"]
         self.spinner_body_parts = ["right_foot", "left_foot", "right_hand", "left_hand", "spinner_choice"]
+        player1.status = "safe"
+        player2.status = "safe"
         
-    def turn(self, player):
-        """Executes a player turn. Uses f string.
+        
+    def turn(self, player1, player2):
+        """Executes a player turn. Uses f string and sequence unpacking.
         
         Args:
             player(str): Name of the current player
@@ -48,7 +48,7 @@ class Players:
         # We need to append the current position for wherever the player is moving to. Havwe the player choose a number to reresent
         # were they are moving to 
         
-        
+        __str__()
         
         turn_spin = input("Type 'spin' to spin the spinner: ")
         if turn_spin != "spin":
@@ -68,12 +68,6 @@ class Players:
             if board[color_position]=="closed":
                 raise ValueError("This position is already closed please choose somewhere another number.")
                 
-                
-        
-        
-        
-        
-        
         
         print(f"{self.player} move your {spin.body_part} to an open {spin.color} circle.")
         
@@ -101,13 +95,20 @@ class Players:
                 empty_list.append("left_hand")
                 empty_list.append(color_position)
                 self.player1_current_position[3]=empty_list
+                
+        spin.elimination()
+        spin.board_adjustment()
+        
+
 
 
 # green1, green6
         
-            spin.board_adjustment
             
-        
+            
+    def __str__(self):
+        """"Returns a representation of where the players are. We will be using a magic method in this method."""
+        return (f"{self.player1}'s current position is {self.player1_current_position[0]}, {self.player1_current_position[1]}, {self.player1_current_position[2]}, {self.player1_current_position[3]}. \n{self.player2}'s current position is {self.player2_current_position[0]}, {self.player2_current_position[1]}, {self.player2_current_position[2]}, {self.player2_current_position[3]}")
 
 class Board:
     """The board the players use for the game Twister.
@@ -158,6 +159,7 @@ class Board:
                "red6":[6,1],
                 }
         
+        print("green1 yellow1 blue1 red1 \ngreen2 yellow2 blue2 red2 \ngreen3 yellow3 blue3 red3 \ngreen4 yellow4 blue4 red4 \ngreen5 yellow5 blue5 red5 \ngreen6 yellow6 blue6 red6")
         
     def spinner(self):
         """The spinner randomly selects a body part that the player will move and a color that the player will land on. Sequence unpacking and list comprehension.
@@ -202,35 +204,35 @@ class Board:
         
         
         
-    def elimination(self, status):
+    def elimination(self):
         """This method determines when a player loses. We will use a conditional expression within this method.
         
-        Args:
-            status(str): whether the player is safe or eliminated
+        
             
         Side effects:
             Prints "Player lost and Other_Player won."
         """
-        status = ""
+        
         player = Players()
         
         max_feet = 3
         max_hands = 2
         
-         
+        #{key: abs(value[1] - player.old_position[-1]) for value in self.position if player.player1_current_position[2:]}
         
-        for key,value in self.position:
+        for key, value in self.position:
             abs_expression_horiz = abs(value[1] - player.old_position[-1]) # will come back to this
             abs_expression_vert = abs(value[0] - player.old_position[-1])
 
         
         for x in player.player1_current_position:
             if player.player1_current_position[2:]:
-                status = "eliminated" if abs_expression_horiz > max_hands or abs_expression_vert> max_hands else "safe"       
+                player1.status = "eliminated" if abs_expression_horiz > max_hands or abs_expression_vert > max_hands else "safe"       
             else:
-                status = "eliminated" if abs_expression_horiz > max_feet or abs_expression_vert> max_feet else "safe"  
-    def board_adjustment(self, player):
-        """Keeps track of where the players are on the board. Uses dictionary comprehension.
+                player1.status = "eliminated" if abs_expression_horiz > max_feet or abs_expression_vert > max_feet else "safe"  
+                
+    def board_adjustment(self):
+        """Keeps track of where the players are on the board. Uses custom class composition.
         
         Args:
             player (Player object): A player participating in the game.
@@ -270,14 +272,26 @@ class Board:
         board[player.color_position]="closed"
         board[player.old_position]="open"
             
-    def __str__(self):
-        """"Returns a representation of the board. We will be using a magic method in this method."""
+    
+        
 
-
+def main(player1, player2):
+    playercall = Players()
+    boardcall = Board()
+    
+    while player1.status == "safe" and player2.status == "safe":
+        for player in playerlist:
+            playercall.turn(player1)
+            playercall.turn(player2)
+        
+        
+        
+        
 #main function
 # call spinner
 # we will be using composition for htis method
     
-    
-    
+
+#if __name__ == "__main__":
+    #main()
     
