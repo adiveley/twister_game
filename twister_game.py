@@ -24,6 +24,16 @@ class Players:
         Side effects: 
             Initializes attribute name,right_foot,left_foot,right_hand,left_hand
         """
+        # Prompt for their name
+        # In the main method before anything starts. In the main ask for the player1 and the player2.
+        # A list of the two players
+        # Pandas 
+        # Use pandas to represent the board as a matrix
+        # Dataframe uniform index 
+        # board.loc[index,[red]]=True 
+        # Go to see Aric
+        # Minimally viable version of the board
+        
         self.player1_current_position = [["right_foot", "blue1"], ["left_foot", "yellow1"], ["right_hand", ""], ["left_hand", ""]]
         self.player2_current_position = [["right_foot", "blue6"], ["left_foot", "yellow6"], ["right_hand", ""], ["left_hand", ""]]
         self.player1 = player1
@@ -273,14 +283,14 @@ class Board:
         board[player.old_position]="open"
             
     
-        
+        # self.players[0]
+        # self.players[1]
 
 def main(player1, player2):
     playercall = Players()
     boardcall = Board()
     
     while player1.status == "safe" and player2.status == "safe":
-        for player in playerlist:
             playercall.turn(player1)
             playercall.turn(player2)
         
