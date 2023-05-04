@@ -30,11 +30,11 @@ class Players:
         self.player2 = player2
         self.spinner_colors = ["green", "yellow", "blue", "red", "spinner_choice"]
         self.spinner_body_parts = ["right_foot", "left_foot", "right_hand", "left_hand", "spinner_choice"]
-        player1.status = "safe"
-        player2.status = "safe"
+
+        self.player1_status = "safe"
+        self.player2_status = "safe"
         
-        
-    def turn(self, player1, player2):
+    def turn(self, player):
         """Executes a player turn. Uses f string and sequence unpacking.
         
         Args:
@@ -48,7 +48,7 @@ class Players:
         # We need to append the current position for wherever the player is moving to. Havwe the player choose a number to reresent
         # were they are moving to 
         
-        __str__()
+        print (self)
         
         turn_spin = input("Type 'spin' to spin the spinner: ")
         if turn_spin != "spin":
@@ -56,21 +56,27 @@ class Players:
     
         spin = Board()
         spin.spinner()
+        
+        print(f"{self.player1} move your {spin.body_part} to an open {spin.color} circle.")
        
-        number=input(int("Enter a number 1-6 to represent the position of the color you want to move to."))
+        number=input("Enter a number 1-6 to represent the position of the color you want to move to.")
+        number = int(number)
         if number<1 or number>6:
             raise ValueError("You did not enter a valid number")
         else:
-            str(number)
-            color_position=spin.color+number #concat the color and the position of the color
+            number = str(number)
+            color_position = spin.color+number 
+            
         
-        for board in spin.board_adjustment:
-            if board[color_position]=="closed":
-                raise ValueError("This position is already closed please choose somewhere another number.")
-                
-        
-        print(f"{self.player} move your {spin.body_part} to an open {spin.color} circle.")
-        
+        while spin.board[color_position]== "closed":
+            print("This position is already closed please choose somewhere another number.")
+            number=input("Enter a number 1-6 to represent the position of the color you want to move to.") 
+            number = int(number)
+            if number<1 or number>6:
+                raise ValueError("You did not enter a valid number")
+            else:
+                number = str(number)
+                color_position = spin.color+number 
         
         
         for body_parts,position_colors in self.player1_current_position:
@@ -99,16 +105,12 @@ class Players:
         spin.elimination()
         spin.board_adjustment()
         
-
-
-
-# green1, green6
-        
             
             
     def __str__(self):
         """"Returns a representation of where the players are. We will be using a magic method in this method."""
         return (f"{self.player1}'s current position is {self.player1_current_position[0]}, {self.player1_current_position[1]}, {self.player1_current_position[2]}, {self.player1_current_position[3]}. \n{self.player2}'s current position is {self.player2_current_position[0]}, {self.player2_current_position[1]}, {self.player2_current_position[2]}, {self.player2_current_position[3]}")
+
 
 class Board:
     """The board the players use for the game Twister.
@@ -121,7 +123,7 @@ class Board:
         
     """
     
-    def __init__(self, board, position):
+    def __init__(self):
         """Initializes a Board object.
         
         Args:
@@ -132,6 +134,8 @@ class Board:
         """
         self.spinner_colors = ["green", "yellow", "blue", "red", "spinner_choice"]
         self.spinner_body_parts = ["right_foot", "left_foot", "right_hand", "left_hand", "spinner_choice"]
+        self.color = ""
+        self.body_part = ""
         
         self.position = {"green1":[1,4],
                "green2":[2,4],
@@ -159,6 +163,33 @@ class Board:
                "red6":[6,1],
                 }
         
+        self.board = {
+               "green1":"open",
+               "green2":"open",
+               "green3":"open",
+               "green4":"open",
+               "green5":"open",
+               "green6":"open",
+               "yellow1":"closed",
+               "yellow2":"open",
+               "yellow3":"open",
+               "yellow4":"open",
+               "yellow5":"open",
+               "yellow6":"closed",
+               "blue1":"closed",
+               "blue2":"open",
+               "blue3":"open",
+               "blue4":"open",
+               "blue5":"open",
+               "blue6":"closed",
+               "red1":"open",
+               "red2":"open",
+               "red3":"open",
+               "red4":"open",
+               "red5":"open",
+               "red6":"open",
+                }
+        
         print("green1 yellow1 blue1 red1 \ngreen2 yellow2 blue2 red2 \ngreen3 yellow3 blue3 red3 \ngreen4 yellow4 blue4 red4 \ngreen5 yellow5 blue5 red5 \ngreen6 yellow6 blue6 red6")
         
     def spinner(self):
@@ -178,28 +209,26 @@ class Board:
             """
             
         
-        color =  random.choice(self.spinner_colors)
+        self.color =  random.choice(self.spinner_colors)
        
-        if color == self.spinner_colors[4]:
+        if self.color == self.spinner_colors[4]:
             myinput = input("Enter the color of your choice: ")
             if myinput not in self.spinner_colors:
                 raise ValueError("Not a valid color.")
             myinput = input("Enter the color of your choice: ")
-            color = myinput
+            self.color = myinput
            
-        body_part = random.choice(self.spinner_body_parts)
+        self.body_part = random.choice(self.spinner_body_parts)
         
-        if body_part == self.spinner_body_parts[4]:
-            myinput = input("Enter the body part of your choice: ")
+        if self.body_part == self.spinner_body_parts[4]:
+            myinput = input("Enter the body part of your choice (right_foot, left_foot, right_hand, left_hand): ")
             if myinput not in self.spinner_body_parts:
                 raise ValueError("Not a valid body part.")
-            myinput = input("Enter the body part of your choice: ")
-            body_part = myinput
+            #myinput = input("Enter the body part of your choice: ")
+            self.body_part = myinput
             
         
-        
-        
-        return body_part, color
+        return self.body_part, self.color
        
         
         
@@ -227,9 +256,10 @@ class Board:
         
         for x in player.player1_current_position:
             if player.player1_current_position[2:]:
-                player1.status = "eliminated" if abs_expression_horiz > max_hands or abs_expression_vert > max_hands else "safe"       
+                player.player1_status = "eliminated" if abs_expression_horiz > max_hands or abs_expression_vert > max_hands else "safe"       
             else:
-                player1.status = "eliminated" if abs_expression_horiz > max_feet or abs_expression_vert > max_feet else "safe"  
+                player.player1_status = "eliminated" if abs_expression_horiz > max_feet or abs_expression_vert > max_feet else "safe"  
+                
                 
     def board_adjustment(self):
         """Keeps track of where the players are on the board. Uses custom class composition.
@@ -240,58 +270,36 @@ class Board:
         Side effects:
             Adjusts the dictionary board.
         
-        
         """
-        board={"green1":"open",
-               "green2":"open",
-               "green3":"open",
-               "green4":"open",
-               "green5":"open",
-               "green6":"open",
-               "yellow1":"closed",
-               "yellow2":"open",
-               "yellow3":"open",
-               "yellow4":"open",
-               "yellow5":"open",
-               "yellow6":"closed",
-               "blue1":"closed",
-               "blue2":"open",
-               "blue3":"open",
-               "blue4":"open",
-               "blue5":"open",
-               "blue6":"closed",
-               "red1":"open",
-               "red2":"open",
-               "red3":"open",
-               "red4":"open",
-               "red5":"open",
-               "red6":"open",
-                }
+        
         player=Players()
         player.turn()
-        board[player.color_position]="closed"
-        board[player.old_position]="open"
+        self.board[player.color_position]="closed"
+        self.board[player.old_position]="open"
             
     
         
 
-def main(player1, player2):
-    playercall = Players()
+def main():
+    
+    player1 = input("name: ")
+    player2 = input("name: ")
+    players = [player1, player2]
+    
+    playercall = Players(player1, player2)
     boardcall = Board()
     
-    while player1.status == "safe" and player2.status == "safe":
-        for player in playerlist:
+    while playercall.player1_status == "safe" and playercall.player2_status == "safe":
+        for player in players:
+            #players[0].turn
             playercall.turn(player1)
             playercall.turn(player2)
         
         
         
         
-#main function
-# call spinner
 # we will be using composition for htis method
     
 
-#if __name__ == "__main__":
-    #main()
-    
+if __name__ == "__main__":
+    main()
