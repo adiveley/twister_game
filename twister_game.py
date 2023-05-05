@@ -3,7 +3,7 @@ import random
 
 
 
-class Players:
+class Player:
     """One of the people playing the game
     
     Attributes:
@@ -15,7 +15,7 @@ class Players:
         
     
     
-    def __init__(self, player1, player2):
+    def __init__(self,position,name,board):
         """Initializes a person object. Uses optional parameters.
         
         Args:
@@ -33,18 +33,16 @@ class Players:
         # board.loc[index,[red]]=True 
         # Go to see Aric
         # Minimally viable version of the board
+        # pass in a board as one of the parameters
+        # create a self.board
         
-        self.player1_current_position = [["right_foot", "blue1"], ["left_foot", "yellow1"], ["right_hand", ""], ["left_hand", ""]]
-        self.player2_current_position = [["right_foot", "blue6"], ["left_foot", "yellow6"], ["right_hand", ""], ["left_hand", ""]]
-        self.player1 = player1
-        self.player2 = player2
-        self.spinner_colors = ["green", "yellow", "blue", "red", "spinner_choice"]
-        self.spinner_body_parts = ["right_foot", "left_foot", "right_hand", "left_hand", "spinner_choice"]
-
-        self.player1_status = "safe"
-        self.player2_status = "safe"
-        
-    def turn(self, player):
+       
+        self.position=position
+        self.name=name
+        self.board=board
+        self.status = "safe"
+    
+    def turn(self):
         """Executes a player turn. Uses f string and sequence unpacking.
         
         Args:
@@ -63,57 +61,43 @@ class Players:
         turn_spin = input("Type 'spin' to spin the spinner: ")
         if turn_spin != "spin":
             raise ValueError("You must type spin to spin the spinner.")
-    
-        spin = Board()
-        spin.spinner()
+
+        # Instance of board to the player 
+        # 
+        body_part,color=self.board.spinner()
         
-        print(f"{self.player1} move your {spin.body_part} to an open {spin.color} circle.")
+        
+        print(f"{self.name} move your {body_part} to an open {color} circle.")
        
-        number=input("Enter a number 1-6 to represent the position of the color you want to move to.")
-        number = int(number)
-        if number<1 or number>6:
-            raise ValueError("You did not enter a valid number")
-        else:
-            number = str(number)
-            color_position = spin.color+number 
+        # number=input("Enter a number 1-6 to represent the position of the color you want to move to.")
+        # number = int(number)
+        # if number<1 or number>6:
+        #     raise ValueError("You did not enter a valid number")
+        # else:
+        #     number = str(number)
+        #     color_position =color+number 
             
         
-        while spin.board[color_position]== "closed":
-            print("This position is already closed please choose somewhere another number.")
+        while True:
             number=input("Enter a number 1-6 to represent the position of the color you want to move to.") 
             number = int(number)
+            
             if number<1 or number>6:
-                raise ValueError("You did not enter a valid number")
+                print("You did not enter a valid number")
+                continue
             else:
-                number = str(number)
-                color_position = spin.color+number 
+                new_position =f"{color}{number}" 
+            if self.board.board[new_position]=="closed":
+                print("This position is already closed please choose somewhere another number.")
+            else:
+                break
+        old_position=self.position[body_part]
+        self.position[body_part]=new_position
+    
         
-        
-        for body_parts,position_colors in self.player1_current_position:
-            empty_list=[]
-            if spin.spinner_body_parts=="right_foot":
-                old_position=self.player1_current_position.pop(0)
-                empty_list.append("right_foot")
-                empty_list.append(color_position)
-                self.player1_current_position[0]=empty_list
-            if spin.spinner_body_parts=="left_foot":
-                old_position=self.player1_current_position.pop(1)
-                empty_list.append("left_foot")
-                empty_list.append(color_position)
-                self.player1_current_position[1]=empty_list
-            if spin.spinner_body_parts=="right_hand":
-                old_position=self.player1_current_position.pop(2)
-                empty_list.append("right_hand")
-                empty_list.append(color_position)
-                self.player1_current_position[2]=empty_list
-            if spin.spinner_body_parts=="left_hand":
-                old_position=self.player1_current_position.pop(3)
-                empty_list.append("left_hand")
-                empty_list.append(color_position)
-                self.player1_current_position[3]=empty_list
-                
-        spin.elimination()
-        spin.board_adjustment()
+       
+        self.board.elimination(old_position,new_position)
+       # spin.board_adjustment()
         
             
             
@@ -217,7 +201,7 @@ class Board:
             color (str): The color that the spinner landed on or spinner's choice.
             
             """
-            
+         # Change spinner into a function so that we o not have to call an instance of board   
         
         self.color =  random.choice(self.spinner_colors)
        
@@ -243,7 +227,7 @@ class Board:
         
         
         
-    def elimination(self):
+    def elimination(self,old_position,new_position):
         """This method determines when a player loses. We will use a conditional expression within this method.
         
         
@@ -252,16 +236,15 @@ class Board:
             Prints "Player lost and Other_Player won."
         """
         
-        player = Players()
         
         max_feet = 3
         max_hands = 2
         
         #{key: abs(value[1] - player.old_position[-1]) for value in self.position if player.player1_current_position[2:]}
         
-        for key, value in self.position:
-            abs_expression_horiz = abs(value[1] - player.old_position[-1]) # will come back to this
-            abs_expression_vert = abs(value[0] - player.old_position[-1])
+        vertical_coordinate,horizontal_coordinate=self.position[new_position]
+        abs_expression_horiz = abs( - old_position[-1]) # will come back to this
+        abs_expression_vert = abs(value[0] - old_position[-1])
 
         
         for x in player.player1_current_position:
@@ -292,19 +275,21 @@ class Board:
         # self.players[1]
 
 def main():
-    
-    player1 = input("name: ")
-    player2 = input("name: ")
-    players = [player1, player2]
-    
-    playercall = Players(player1, player2)
     boardcall = Board()
+    name1 = input("name: ")
+    name2 = input("name: ")
+    player1_current_position = {"right_foot":"blue1", "left_foot":"yellow1", "right_hand":"", "left_hand":""}
+    player2_current_position = {"right_foot":"blue6","left_foot":"yellow6", "right_hand":"", "left_hand":""}
+        
     
-    while playercall.player1_status == "safe" and playercall.player2_status == "safe":
-        for player in players:
-            #players[0].turn
-            playercall.turn(player1)
-            playercall.turn(player2)
+    player1= Player(player1_current_position,name1,boardcall)
+    player2=Player(player2_current_position,name2,boardcall)
+    
+    
+    
+    while player1.status=="safe" and player2.status=="safe":
+        player1.turn()
+        player2.turn()
         
         
         
