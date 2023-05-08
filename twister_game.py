@@ -242,6 +242,9 @@ class Board:
                 self.status = "eliminated" if abs_expression_horiz > max_feet or abs_expression_vert > max_feet else "safe"  
             
         print(self.status)
+        
+        if self.status == "eliminated":
+            print(f"{self.name} has been eliminated. Your new position is {dictionary}")
                 
     def board_adjustment(self,old_position,new_position):
         """Keeps track of where the players are on the board. 
@@ -253,12 +256,14 @@ class Board:
             Adjusts the dictionary board.
         
         """
-        
-        
+                
+        dictionary = {key: test.position[key] == "" for key in test.player1_current_position if test.status == "eliminated"}
         
         self.board[old_position]="open"
         self.board[new_position]="closed"
         print(self.board)
+        
+        
         
         
         
