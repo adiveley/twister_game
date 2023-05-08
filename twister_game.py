@@ -115,7 +115,7 @@ class Board:
         self.color = ""
         self.body_part = ""
         
-        self.position = {"green1":[1,4],
+        self.coordinate = {"green1":[1,4],
                "green2":[2,4],
                "green3":[3,4],
                "green4": [4,4],
@@ -220,24 +220,25 @@ class Board:
             Prints "Player lost and Other_Player won."
         """
         
-        
         max_feet = 3
         max_hands = 2
         
         #{key: abs(value[1] - player.old_position[-1]) for value in self.position if player.player1_current_position[2:]}
-        #vertical_coordinate_old,horizontal_coordinate_old=self.position[old_position]
-        #vertical_coordinate,horizontal_coordinate=self.position[new_position]
+        vertical_coordinate_old,horizontal_coordinate_old=self.coordinate[old_position]
+        vertical_coordinate,horizontal_coordinate=self.coordinate[new_position]
         
-       # abs_expression_horiz = abs(horizontal_coordinate-horizontal_coordinate_old) # will come back to this
-        #abs_expression_vert = abs(vertical_coordinate - vertical_coordinate_old)
+        abs_expression_horiz = abs(horizontal_coordinate-horizontal_coordinate_old) # will come back to this
+        abs_expression_vert = abs(vertical_coordinate - vertical_coordinate_old)
         
 
         
-        # for x in self.position:
-        #      if self.position[2:]:
-        #           self.status = "eliminated" if abs_expression_horiz > max_hands or abs_expression_vert > max_hands else "safe"       
-        #      else:
-        #          self.status = "eliminated" if abs_expression_horiz > max_feet or abs_expression_vert > max_feet else "safe"  
+        if self.position=="":
+            pass
+        else:
+            if self.position[new_position]=="right_hand" or self.position[old_position]=="right_hand":
+                self.status = "eliminated" if abs_expression_horiz > max_hands or abs_expression_vert > max_hands else "safe"       
+            else:
+                self.status = "eliminated" if abs_expression_horiz > max_feet or abs_expression_vert > max_feet else "safe"  
                 
                 
     def board_adjustment(self):
