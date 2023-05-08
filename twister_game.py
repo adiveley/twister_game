@@ -75,13 +75,14 @@ class Player:
                 print("This position is already closed please choose another number. ")
             else:
                 break
-        old_position=self.position[body_part]
-        self.position[body_part]=new_position
+        old_position = self.position[body_part]
+        self.position[body_part] = new_position
     
         
        
-        self.board.elimination(old_position,new_position)
-       # spin.board_adjustment()
+        #self.board.elimination(old_position,new_position)
+        self.board.board_adjustment(old_position,new_position)
+        
         
             
             
@@ -115,7 +116,7 @@ class Board:
         self.color = ""
         self.body_part = ""
         
-        self.position = {"green1":[1,4],
+        self.coordinates = {"green1":[1,4],
                "green2":[2,4],
                "green3":[3,4],
                "green4": [4,4],
@@ -139,6 +140,7 @@ class Board:
                "red4":[4,1],
                "red5":[5,1],
                "red6":[6,1],
+               "": [0,0]
                 }
         
         self.board = {
@@ -214,8 +216,6 @@ class Board:
     def elimination(self,old_position,new_position):
         """This method determines when a player loses. We will use a conditional expression within this method.
         
-        
-            
         Side effects:
             Prints "Player lost and Other_Player won."
         """
@@ -224,24 +224,27 @@ class Board:
         max_feet = 3
         max_hands = 2
         
-        #{key: abs(value[1] - player.old_position[-1]) for value in self.position if player.player1_current_position[2:]}
-        #vertical_coordinate_old,horizontal_coordinate_old=self.position[old_position]
-        #vertical_coordinate,horizontal_coordinate=self.position[new_position]
         
-       # abs_expression_horiz = abs(horizontal_coordinate-horizontal_coordinate_old) # will come back to this
-        #abs_expression_vert = abs(vertical_coordinate - vertical_coordinate_old)
+        vertical_coordinate_old, horizontal_coordinate_old = self.coordinates[old_position]
+        vertical_coordinate, horizontal_coordinate = self.coordinates[new_position]
+        
+        abs_expression_horiz = abs(horizontal_coordinate - horizontal_coordinate_old) # will come back to this
+        abs_expression_vert = abs(vertical_coordinate - vertical_coordinate_old)
         
 
+        #test = Player(, name1, self)
         
-        # for x in self.position:
-        #      if self.position[2:]:
-        #           self.status = "eliminated" if abs_expression_horiz > max_hands or abs_expression_vert > max_hands else "safe"       
-        #      else:
-        #          self.status = "eliminated" if abs_expression_horiz > max_feet or abs_expression_vert > max_feet else "safe"  
+        if test.position[new_position] == "":
+                  pass
+        else:
+            if test.position[new_position] == "right_hand" or test.position[new_position] == "left_hand":
+                   test.status = "eliminated" if abs_expression_horiz > max_hands or abs_expression_vert > max_hands else "safe"       
+            else:
+                test.status = "eliminated" if abs_expression_horiz > max_feet or abs_expression_vert > max_feet else "safe"  
                 
                 
-    def board_adjustment(self):
-        """Keeps track of where the players are on the board. Uses custom class composition.
+    def board_adjustment(self,old_position,new_position):
+        """Keeps track of where the players are on the board. 
         
         Args:
             player (Player object): A player participating in the game.
@@ -250,23 +253,21 @@ class Board:
             Adjusts the dictionary board.
         
         """
-        #old_position=0
-        #new_position=0
         
         
         
-        #self.board[old_position]="closed"
-        #self.board[new_position]="open"
+        self.board[old_position]="open"
+        self.board[new_position]="closed"
+        print(self.board)
         
         
         
-       # print(self.board)
-            
-    
-        # self.players[0]
-        # self.players[1]
+        
+        
+        
 
 def main():
+    #Uses custom class composition.
     boardcall = Board()
     name1 = input("Enter player1 name: ")
     name2 = input("Enter player2 name: ")
