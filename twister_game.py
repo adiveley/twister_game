@@ -80,14 +80,14 @@ class Player:
     
         
        
-        self.board.elimination(old_position,new_position)
+        self.board.elimination(old_position,new_position, self.name, self.status)
         self.board.board_adjustment(old_position,new_position)
         
         
             
             
     def __str__(self):
-         """"Returns a representation of where the players are. We will be using a magic method in this method."""
+         """Returns a representation of where the players are. We will be using a magic method in this method."""
          return (f"{self.name}'s current position is {self.position}.")
 
 
@@ -213,7 +213,7 @@ class Board:
         
         
         
-    def elimination(self,old_position,new_position):
+    def elimination(self,old_position,new_position, name, status):
         """This method determines when a player loses. We will use a conditional expression within this method.
         
         Side effects:
@@ -237,14 +237,15 @@ class Board:
                   pass
         else:
             if new_position== "right_hand" or new_position == "left_hand":
-                   self.status = "eliminated" if abs_expression_horiz > max_hands or abs_expression_vert > max_hands else "safe"       
+                   status = "eliminated" if abs_expression_horiz > max_hands or abs_expression_vert > max_hands else "safe"       
             else:
-                self.status = "eliminated" if abs_expression_horiz > max_feet or abs_expression_vert > max_feet else "safe"  
+                status = "eliminated" if abs_expression_horiz > max_feet or abs_expression_vert > max_feet else "safe"  
             
-        print(self.status)
+        print(status)
         
-        if self.status == "eliminated":
-            print(f"{self.name} has been eliminated. Your new position is {dictionary}")
+        if status == "eliminated":
+            print(f"{name} has been eliminated. ")
+                #Your new position is {dictionary}
                 
     def board_adjustment(self,old_position,new_position):
         """Keeps track of where the players are on the board. 
@@ -257,7 +258,7 @@ class Board:
         
         """
                 
-        dictionary = {key: test.position[key] == "" for key in test.player1_current_position if test.status == "eliminated"}
+        #dictionary = {key: test.position[key] == "" for key in test.player1_current_position if test.status == "eliminated"}
         
         self.board[old_position]="open"
         self.board[new_position]="closed"
@@ -287,6 +288,7 @@ def main():
     
     while player1.status=="safe" and player2.status=="safe":
         player1.turn()
+        print(player1.status)
         player2.turn()
         
         
