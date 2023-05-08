@@ -7,11 +7,7 @@ class Player:
     """One of the people playing the game
     
     Attributes:
-        name(str): The name of the player
-        right_foot(int): A number(1) that represents the right foot
-        left_foot(int): A number(2) that represents the left foot
-        right_hand(int): A number(3) that represents the right hand
-        left_hand(int): A number(4) that represents the left hand"""
+        d"""
         
     
     
@@ -23,19 +19,7 @@ class Player:
             
         Side effects: 
             Initializes attribute name,right_foot,left_foot,right_hand,left_hand
-        """
-        # Prompt for their name
-        # In the main method before anything starts. In the main ask for the player1 and the player2.
-        # A list of the two players
-        # Pandas 
-        # Use pandas to represent the board as a matrix
-        # Dataframe uniform index 
-        # board.loc[index,[red]]=True 
-        # Go to see Aric
-        # Minimally viable version of the board
-        # pass in a board as one of the parameters
-        # create a self.board
-        
+        """        
        
         self.position=position
         self.name=name
@@ -79,7 +63,7 @@ class Player:
             
         
         while True:
-            number=input("Enter a number 1-6 to represent the position of the color you want to move to.") 
+            number=input("Enter a number 1-6 to represent the position of the color you want to move to: ") 
             number = int(number)
             
             if number<1 or number>6:
@@ -88,7 +72,7 @@ class Player:
             else:
                 new_position =f"{color}{number}" 
             if self.board.board[new_position]=="closed":
-                print("This position is already closed please choose somewhere another number.")
+                print("This position is already closed please choose another number. ")
             else:
                 break
         old_position=self.position[body_part]
@@ -102,8 +86,8 @@ class Player:
             
             
     def __str__(self):
-        """"Returns a representation of where the players are. We will be using a magic method in this method."""
-        return (f"{self.player1}'s current position is {self.player1_current_position[0]}, {self.player1_current_position[1]}, {self.player1_current_position[2]}, {self.player1_current_position[3]}. \n{self.player2}'s current position is {self.player2_current_position[0]}, {self.player2_current_position[1]}, {self.player2_current_position[2]}, {self.player2_current_position[3]}")
+         """"Returns a representation of where the players are. We will be using a magic method in this method."""
+         return (f"{self.name}'s current position is {self.position}.")
 
 
 class Board:
@@ -209,7 +193,7 @@ class Board:
             myinput = input("Enter the color of your choice: ")
             if myinput not in self.spinner_colors:
                 raise ValueError("Not a valid color.")
-            myinput = input("Enter the color of your choice: ")
+           # myinput = input("Enter the color of your choice: ")
             self.color = myinput
            
         self.body_part = random.choice(self.spinner_body_parts)
@@ -241,17 +225,19 @@ class Board:
         max_hands = 2
         
         #{key: abs(value[1] - player.old_position[-1]) for value in self.position if player.player1_current_position[2:]}
+        #vertical_coordinate_old,horizontal_coordinate_old=self.position[old_position]
+        #vertical_coordinate,horizontal_coordinate=self.position[new_position]
         
-        vertical_coordinate,horizontal_coordinate=self.position[new_position]
-        abs_expression_horiz = abs( - old_position[-1]) # will come back to this
-        abs_expression_vert = abs(value[0] - old_position[-1])
+       # abs_expression_horiz = abs(horizontal_coordinate-horizontal_coordinate_old) # will come back to this
+        #abs_expression_vert = abs(vertical_coordinate - vertical_coordinate_old)
+        
 
         
-        for x in player.player1_current_position:
-            if player.player1_current_position[2:]:
-                player.player1_status = "eliminated" if abs_expression_horiz > max_hands or abs_expression_vert > max_hands else "safe"       
-            else:
-                player.player1_status = "eliminated" if abs_expression_horiz > max_feet or abs_expression_vert > max_feet else "safe"  
+        # for x in self.position:
+        #      if self.position[2:]:
+        #           self.status = "eliminated" if abs_expression_horiz > max_hands or abs_expression_vert > max_hands else "safe"       
+        #      else:
+        #          self.status = "eliminated" if abs_expression_horiz > max_feet or abs_expression_vert > max_feet else "safe"  
                 
                 
     def board_adjustment(self):
@@ -264,11 +250,17 @@ class Board:
             Adjusts the dictionary board.
         
         """
+        #old_position=0
+        #new_position=0
         
-        player=Players()
-        player.turn()
-        self.board[player.color_position]="closed"
-        self.board[player.old_position]="open"
+        
+        
+        #self.board[old_position]="closed"
+        #self.board[new_position]="open"
+        
+        
+        
+       # print(self.board)
             
     
         # self.players[0]
@@ -276,8 +268,8 @@ class Board:
 
 def main():
     boardcall = Board()
-    name1 = input("name: ")
-    name2 = input("name: ")
+    name1 = input("Enter player1 name: ")
+    name2 = input("Enter player2 name: ")
     player1_current_position = {"right_foot":"blue1", "left_foot":"yellow1", "right_hand":"", "left_hand":""}
     player2_current_position = {"right_foot":"blue6","left_foot":"yellow6", "right_hand":"", "left_hand":""}
         
