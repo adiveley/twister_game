@@ -75,13 +75,13 @@ class Player:
                 print("This position is already closed please choose another number. ")
             else:
                 break
+            
         old_position = self.position[body_part]
         self.position[body_part] = new_position
     
         
-       
         self.board.elimination(old_position,new_position,self)
-        self.board.board_adjustment(old_position,new_position)
+        self.board.board_adjustment(old_position,new_position,self)
         
           
             
@@ -171,36 +171,7 @@ class Board:
         
         print("green1 yellow1 blue1 red1 \ngreen2 yellow2 blue2 red2 \ngreen3 yellow3 blue3 red3 \ngreen4 yellow4 blue4 red4 \ngreen5 yellow5 blue5 red5 \ngreen6 yellow6 blue6 red6")
         
-    def __str__(self):
-        g1 = self.board["green1"]
-        g2 = self.board["green2"] 
-        g3 = self.board["green3"]
-        g4 = self.board["green4"]
-        g5 = self.board["green5"]
-        g6 = self.board["green6"]
-        y1 = self.board["yellow1"]
-        y2 = self.board["yellow2"]
-        y3 = self.board["yellow3"]
-        y4 = self.board["yellow4"]
-        y5 = self.board["yellow5"]
-        y6 = self.board["yellow6"]
-        b1 = self.board["blue1"]
-        b2 = self.board["blue2"]
-        b3 = self.board["blue3"]
-        b4 = self.board["blue4"]
-        b5 = self.board["blue5"]
-        b6 = self.board["blue6"]
-        r1 = self.board["red1"]
-        r2 = self.board["red2"]
-        r3 = self.board["red3"]
-        r4 = self.board["red4"]
-        r5 = self.board["red5"]
-        r6 = self.board["red6"]
-        green="green"
-        red="red"
-        blue="blue"
-        yellow="yellow"
-        return print(f"{green} {yellow} {blue} {red}\n{g1} {y1} {b1} {r1}\n{g2} {y2} {b2} {r2}\n{g3} {y3} {b3} {r3}\n{g4} {y4} {b4} {r4}\n{g5} {y5} {b5} {r5}\n{g6} {y6} {b6} {r6}\n")
+    
         
     def spinner(self):
         """The spinner randomly selects a body part that the player will move and a color that the player will land on. Sequence unpacking and list comprehension.
@@ -278,7 +249,7 @@ class Board:
         
                 #Your new position is {dictionary}
                 
-    def board_adjustment(self,old_position,new_position):
+    def board_adjustment(self,old_position,new_position,player):
         """Keeps track of where the players are on the board. 
         
         Args:
@@ -289,13 +260,26 @@ class Board:
         
         """
                 
-        #dictionary = {key: test.position[key] == "" for key in test.player1_current_position if test.status == "eliminated"}
-        
+        {key: old_position == "" for key in self.board[new_position] if player.status == "eliminated"} # will remove the player from the board
+        # current position still updating even when the player does an ilegal move not sure how to fix.  
       
+        if player.status=="safe":                
+            self.board[old_position]="open"
+            self.board[new_position]="closed"
+        
+        
+        if player.status=="eliminated":
+            self.board[old_position]="open"
+            self.board[new_position]="open"
+            print(self.board)
+            
 
-        self.board[old_position]="open"
-        self.board[new_position]="closed"
 
+            
+            
+            
+            
+        
         
         
         
@@ -319,14 +303,20 @@ def main():
     
     
     
+    
     while player1.status=="safe" and player2.status=="safe":
         player1.turn()
         player2.turn()
-        # if player1.status=="eliminate" and player2.status=="safe":
-        #     print(f"{name2} has won the game")
-        # else:
-        #     if player1.status=="safe" and player2.status=="eliminate":
-        #         print(f"{name1} has won the game")
+    if player1.status=="eliminated" and player2.status=="safe":
+             print(f"{name2} has won the game")
+    else:
+        if player1.status=="safe" and player2.status=="eliminated":
+            print(f"{name1} has won the game")
+        else:
+            if player1.status=="eliminated" and player2.status=="eliminated":
+                print(f"{name1} and {name2} have lost the game")
+    
+        
                     
         
         
