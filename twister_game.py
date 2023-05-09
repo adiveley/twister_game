@@ -26,7 +26,7 @@ class Player:
         self.board=board
         self.status = "safe"
     
-    def turn(self):
+    def turn(self,status):
         """Executes a player turn. Uses f string and sequence unpacking.
         
         Args:
@@ -80,14 +80,14 @@ class Player:
     
         
        
-        self.board.elimination(old_position,new_position)
+        self.board.elimination(old_position,new_position,status)
         self.board.board_adjustment(old_position,new_position)
         
         
             
             
     def __str__(self):
-         """"Returns a representation of where the players are. We will be using a magic method in this method."""
+         """Returns a representation of where the players are. We will be using a magic method in this method."""
          return (f"{self.name}'s current position is {self.position}.")
 
 
@@ -213,7 +213,7 @@ class Board:
         
         
         
-    def elimination(self,old_position,new_position):
+    def elimination(self,old_position,new_position,status):
         """This method determines when a player loses. We will use a conditional expression within this method.
         
         Side effects:
@@ -282,6 +282,7 @@ def main():
     
     while player1.status=="safe" and player2.status=="safe":
         player1.turn()
+        print(player1.status)
         player2.turn()
         
         
