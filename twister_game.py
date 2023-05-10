@@ -12,7 +12,7 @@ class Player:
     
     
     def __init__(self,position,name,board):
-        """Initializes a person object. 
+        """Initializes a person object. Uses custom class composition (1/6)
         
         Args:
             name(str): the name of the player
@@ -27,7 +27,7 @@ class Player:
         self.status = "safe"
     
     def turn(self):
-        """Executes a player turn. Uses f string (1/6)).
+        """Executes a player turn. Uses f-string (2/6).
         
         Args:
             player(str): Name of the current player
@@ -37,29 +37,22 @@ class Player:
             Prompts the current player to spin for a body part and a color.
             Prints {self.player} move your {spin.body_part} to an open {spin.color} circle.
         """
-        # We need to append the current position for wherever the player is moving to. Havwe the player choose a number to reresent
-        # were they are moving to 
         
         print (self)
         
-        turn_spin = input("Type 'spin' to spin the spinner: ")
-        if turn_spin != "spin":
-            raise ValueError("You must type spin to spin the spinner.")
+        while True:
+            turn_spin = input("Type 'spin' to spin the spinner: ")
+            if turn_spin != "spin":
+                print ("You must type spin to spin the spinner.")
+            else:
+                break
 
-        # Instance of board to the player 
-        # 
+
         body_part,color=self.board.spinner()
         
         
         print(f"{self.name} move your {body_part} to an open {color} circle.")
        
-        # number=input("Enter a number 1-6 to represent the position of the color you want to move to.")
-        # number = int(number)
-        # if number<1 or number>6:
-        #     raise ValueError("You did not enter a valid number")
-        # else:
-        #     number = str(number)
-        #     color_position =color+number 
             
         
         while True:
@@ -86,9 +79,9 @@ class Player:
           
             
     def __str__(self):
-        # magic method (2/6)
-         """Returns a representation of where the players are. We will be using a magic method in this method."""
-         return (f"{self.name}'s current position is {self.position}.")
+        """ Uses magic method (3/6)
+        Returns a representation of where the players are. We will be using a magic method in this method."""
+        return (f"{self.name}'s current position is {self.position}.")
 
 
 class Board:
@@ -198,27 +191,34 @@ class Board:
             color (str): The color that the spinner landed on or spinner's 
             choice.
             
-            """
-         # Change spinner into a function so that we o not have to call an instance of board   
-        
+            """  
+
         self.color =  random.choice(self.spinner_colors)
        
         if self.color == self.spinner_colors[4]:
-            myinput = input("Enter the color of your choice: ")
-            if myinput not in self.spinner_colors:
-                raise ValueError("Not a valid color.")
-           # myinput = input("Enter the color of your choice: ")
+            while True:
+                myinput = input("Enter the color of your choice: ")
+                if myinput not in self.spinner_colors:
+                    print ("Not a valid color.")
+                else:
+                    break
+                
             self.color = myinput
+            
            
         self.body_part = random.choice(self.spinner_body_parts)
         
         if self.body_part == self.spinner_body_parts[4]:
-            myinput = input("Enter the body part of your choice "
+            while True:
+                myinput = input("Enter the body part of your choice "
                         "(right_foot, left_foot, right_hand, left_hand): ")
-            if myinput not in self.spinner_body_parts:
-                raise ValueError("Not a valid body part.")
-            #myinput = input("Enter the body part of your choice: ")
+                if myinput not in self.spinner_body_parts:
+                    print("Not a valid body part.")
+                else:
+                    break
+            
             self.body_part = myinput
+
             
         
         return self.body_part, self.color
@@ -228,7 +228,7 @@ class Board:
         
     def elimination(self,old_position,new_position,player):
         """This method determines when a player loses. We will use a conditional
-        expression and sequence unpacking (4/6) within this method.
+        expression and sequence unpacking (5/6) within this method.
         ## Comments: pass in the player instance here as an arg
         ex) player
         Side effects:
@@ -245,26 +245,23 @@ class Board:
         abs_expression_horiz = abs(horizontal_coordinate - horizontal_coordinate_old) # will come back to this
         abs_expression_vert = abs(vertical_coordinate - vertical_coordinate_old)
         
-
-        #test = Player(, name1, self)
         
         if old_position == "":
                   pass
         else:
             if new_position== "right_hand" or new_position == "left_hand":
                    player.status = "eliminated" if abs_expression_horiz > max_hands or abs_expression_vert > max_hands else "safe"  
-                   # player.status
             else:
                 player.status = "eliminated" if abs_expression_horiz > max_feet or abs_expression_vert > max_feet else "safe"  
             
         if player.status == "eliminated":
             print(f"{player.name} has been eliminated. ")
         
-                #Your new position is {dictionary}
+        
                 
     def board_adjustment(self,old_position,new_position,player):
         """Keeps track of where the players are on the board. We will use 
-        dictionary comprehension (5/6) within this method.
+        dictionary comprehension (6/6) within this method.
         
         Args:
             player (Player object): A player participating in the game.
@@ -273,29 +270,30 @@ class Board:
             Adjusts the dictionary board.
         
         """
-                
-        {key: old_position == "" for key in self.board[new_position] if player.status == "eliminated"} # will remove the player from the board
-        # current position still updating even when the player does an ilegal move not sure how to fix.  
+              
+        remove_player = {key: "" for key in player.position if player.status == "eliminated"}
+        if player.status == "eliminated":
+            print (f'{player.name} has been removed from the board: {remove_player}') 
       
       
         if player.status=="safe":                
             self.board[old_position]="open"
             self.board[new_position]="closed"
-        
+            
+
         
         if player.status=="eliminated":
-            self.board[old_position]="open"
-            self.board[new_position]="open"
-            print(self.board)
-            
+            self.board[player.position["right_foot"]]="open"
+            self.board[player.position["left_foot"]]="open"
+            self.board[player.position["right_hand"]]="open"
+            self.board[player.position["left_hand"]]="open"
 
 
+
             
-            
-        
 
 def main():
-    #Uses custom class composition (6/6).
+     
     boardcall = Board()
     name1 = input("Enter player1 name: ")
     name2 = input("Enter player2 name: ")
@@ -311,7 +309,9 @@ def main():
     
     while player1.status=="safe" and player2.status=="safe":
         player1.turn()
+        print(f'Here is the current state of the board: {boardcall.board}')
         player2.turn()
+        print(f'Here is the current state of the board: {boardcall.board}')
     if player1.status=="eliminated" and player2.status=="safe":
              print(f"{name2} has won the game")
     else:
@@ -319,10 +319,9 @@ def main():
             print(f"{name1} has won the game")
         else:
             if player1.status=="eliminated" and player2.status=="eliminated":
-                print(f"{name1} and {name2} have lost the game")
+                print(f"Both {name1} and {name2} have lost the game")
     
         
-                    
     
 
 if __name__ == "__main__":
