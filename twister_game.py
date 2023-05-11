@@ -59,6 +59,8 @@ class Player:
             else:
                 break
 
+        
+
 
         body_part,color=self.board.spinner()
         
@@ -202,6 +204,7 @@ class Board:
             
             """  
 
+
         self.color =  random.choice(self.spinner_colors)
        
         if self.color == self.spinner_colors[4]:
@@ -212,7 +215,11 @@ class Board:
                 else:
                     break
                 
+            
+                
             self.color = myinput
+            
+           
             
            
         self.body_part = random.choice(self.spinner_body_parts)
@@ -351,6 +358,8 @@ def main():
                 print(f"Both {name1} and {name2} have lost the game")
     
         
+    
+
     
 
 if __name__ == "__main__":
