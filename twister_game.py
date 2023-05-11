@@ -4,21 +4,29 @@ import random
 
 
 class Player:
-    """One of the people playing the game
+    """A player that is playing the game
     
     Attributes:
-        d"""
+        position(dictionary): A dictionary containg the cureent position of the player
+        name(string): The name of the people playing the game
+        board(custom class composotion): An instance of the board class within the player
+        status(string): The current status of the player. Determines if player is safe or eliminated
+        
+                """
         
     
     
     def __init__(self,position,name,board):
-        """Initializes a person object. Uses optional parameters.
+        """Initializes a person object.Uses custom class composition (1/6)
+           Author:Emmanuel Leonard
         
         Args:
-            name(str): the name of the player
+            position(dictionary): A dictionary containg the cureent position of the player
+            name(string): The name of the people playing the game
+            board(custom class composotion): An instance of the board class within the player
             
         Side effects: 
-            Initializes attribute name,right_foot,left_foot,right_hand,left_hand
+            Initializes attribute position, name and board and status
         """        
        
         self.position=position
@@ -27,39 +35,36 @@ class Player:
         self.status = "safe"
     
     def turn(self):
-        """Executes a player turn. Uses f string and sequence unpacking.
+        """Executes a player turn. Uses f-string (2/6).
+           Author: Emmanuel Leonard
         
-        Args:
-            player(str): Name of the current player
-        Raises:
-            ValueError: User did not type color or body part.
         Side effects:
             Prompts the current player to spin for a body part and a color.
             Prints {self.player} move your {spin.body_part} to an open {spin.color} circle.
+            Ask the usder to Type 'spin' to spin the spinner: 
+            Prints you must type spin to spin the player
+            Ask the user to input a number 1-6
+            Prints you did not enter a valid number(prints under certain conditions).
+            Prints This position is already closed please choose another number
+            Changes the attribute self.position.
+            Prints the string magic method
         """
-        # We need to append the current position for wherever the player is moving to. Havwe the player choose a number to reresent
-        # were they are moving to 
         
         print (self)
         
-        turn_spin = input("Type 'spin' to spin the spinner: ")
-        if turn_spin != "spin":
-            raise ValueError("You must type spin to spin the spinner.")
+        while True:
+            turn_spin = input("Type 'spin' to spin the spinner: ")
+            if turn_spin != "spin":
+                print ("You must type spin to spin the spinner.")
+            else:
+                break
 
-        # Instance of board to the player 
-        # 
+
         body_part,color=self.board.spinner()
         
         
         print(f"{self.name} move your {body_part} to an open {color} circle.")
        
-        # number=input("Enter a number 1-6 to represent the position of the color you want to move to.")
-        # number = int(number)
-        # if number<1 or number>6:
-        #     raise ValueError("You did not enter a valid number")
-        # else:
-        #     number = str(number)
-        #     color_position =color+number 
             
         
         while True:
@@ -86,8 +91,10 @@ class Player:
           
             
     def __str__(self):
-         """Returns a representation of where the players are. We will be using a magic method in this method."""
-         return (f"{self.name}'s current position is {self.position}.")
+        """ Uses magic method (3/6)
+        Author: Allison Diveley
+        Returns a representation of where the players are. We will be using a magic method in this method."""
+        return (f"\n{self.name}'s current position is {self.position}.\n")
 
 
 class Board:
@@ -97,18 +104,19 @@ class Board:
         spinner_colors(list of strings):A list containing all the four possible colors(red,blue,green,yellow,spinner_choice) a player can move to.
         spinner_body_parts(list of strings):A list containing the four possible body parts(left/right hand,left/right foot,spinner_choice) that a player can place on the board
         board (dictionary): Dictionary that represents each circle on the board and whether or not it is occupied.
-        player (Player object): A player participating in the game.
+        color(string): color given by the spinner or chosen by the player
+        body_part(string):Body part given by the spinner or chosen by the player.
+        coordinates(dictionary): Gives the cordinates of each circle on the board.
         
     """
     
     def __init__(self):
         """Initializes a Board object.
-        
-        Args:
-            board (dictionary): Dictionary that represents each circle on the board and whether or not it is occupied.
-            
+           Author: Emmanuel Leonard
+           
         Side effects:
-             Initializes attribute board,spinner_colors,spinner_body_parts
+             Initializes attribute board,coordinates,spinner_colors,spinner_body_parts,color,body_part
+             prints a portrayal of the board. 
         """
         self.spinner_colors = ["green", "yellow", "blue", "red", "spinner_choice"]
         self.spinner_body_parts = ["right_foot", "left_foot", "right_hand", "left_hand", "spinner_choice"]
@@ -169,44 +177,57 @@ class Board:
                "red6":"open",
                 }
         
-        print("green1 yellow1 blue1 red1 \ngreen2 yellow2 blue2 red2 \ngreen3 yellow3 blue3 red3 \ngreen4 yellow4 blue4 red4 \ngreen5 yellow5 blue5 red5 \ngreen6 yellow6 blue6 red6")
+        print("green1 yellow1 blue1 red1 \ngreen2 yellow2 blue2 red2 \n"
+              "green3 yellow3 blue3 red3 \ngreen4 yellow4 blue4 red4 \n"
+              "green5 yellow5 blue5 red5 \ngreen6 yellow6 blue6 red6 \n")
         
     
         
     def spinner(self):
-        """The spinner randomly selects a body part that the player will move and a color that the player will land on. Sequence unpacking and list comprehension.
+        """The spinner randomly selects a body part that the player will move 
+        and a color that the player will land on. 
+        Author: Tyler Dulin
         
-        Args:
-            spinner_colors(list of strings):A list containing all the four possible colors(red,blue,green,yellow,spinner_choice) a player can move to.
-            spinner_body_parts(list of strings):A list containing the four possible body parts(left/right hand,left/right foot,sinner_choice) that a player can place on the board
-            
-        Raises:
-            ValueError: body part and color selected are not found within the spinnner_color or spinner_body_parts
-         
+                
         Returns:
-            body_part (str): The body part that the spinner landed on or spinner's choice.
-            color (str): The color that the spinner landed on or spinner's choice.
+            body_part (str): The body part that the spinner landed on or 
+            spinner's choice.
+            color (str): The color that the spinner landed on or spinner's 
+            choice.
+        Side effects:
+            Alters the attributes color and body_part.
+            Ask the player to input a color of their choice(when on spinner choice).
+            Ask the player to input a body_part of their choice(when on spinner choice)
+            Prints not a valid color or body_part if user does not type the current input
             
-            """
-         # Change spinner into a function so that we o not have to call an instance of board   
-        
+            """  
+
         self.color =  random.choice(self.spinner_colors)
        
         if self.color == self.spinner_colors[4]:
-            myinput = input("Enter the color of your choice: ")
-            if myinput not in self.spinner_colors:
-                raise ValueError("Not a valid color.")
-           # myinput = input("Enter the color of your choice: ")
+            while True:
+                myinput = input("Enter the color of your choice: ")
+                if myinput not in self.spinner_colors:
+                    print ("Not a valid color.")
+                else:
+                    break
+                
             self.color = myinput
+            
            
         self.body_part = random.choice(self.spinner_body_parts)
         
         if self.body_part == self.spinner_body_parts[4]:
-            myinput = input("Enter the body part of your choice (right_foot, left_foot, right_hand, left_hand): ")
-            if myinput not in self.spinner_body_parts:
-                raise ValueError("Not a valid body part.")
-            #myinput = input("Enter the body part of your choice: ")
+            while True:
+                myinput = input("Enter the body part of your choice "
+                        "(right_foot, left_foot, right_hand, left_hand): ")
+                if myinput not in self.spinner_body_parts:
+                    print("Not a valid body part.")
+                else:
+                    break
+            
             self.body_part = myinput
+
             
         
         return self.body_part, self.color
@@ -215,11 +236,14 @@ class Board:
         
         
     def elimination(self,old_position,new_position,player):
-        """This method determines when a player loses. We will use a conditional expression within this method.
-        ## Comments: pass in the player instance here as an arg
-        ex) player
+        """This method determines when a player loses. We will use a conditional
+        expression and sequence unpacking (5/6) within this method.
+        Author:Tyler Dulin
+        
         Side effects:
-            Prints "Player lost and Other_Player won."
+            Prints "Player lost."
+            Prints the string magic method
+            Updates the player.status attribute
         """
         print(player)
         max_feet = 3
@@ -232,65 +256,73 @@ class Board:
         abs_expression_horiz = abs(horizontal_coordinate - horizontal_coordinate_old) # will come back to this
         abs_expression_vert = abs(vertical_coordinate - vertical_coordinate_old)
         
-
-        #test = Player(, name1, self)
         
         if old_position == "":
                   pass
         else:
             if new_position== "right_hand" or new_position == "left_hand":
                    player.status = "eliminated" if abs_expression_horiz > max_hands or abs_expression_vert > max_hands else "safe"  
-                   # player.status
             else:
                 player.status = "eliminated" if abs_expression_horiz > max_feet or abs_expression_vert > max_feet else "safe"  
             
         if player.status == "eliminated":
-            print(f"{player.name} has been eliminated. ")
+            print(f"{player.name} has been eliminated. \n")
         
-                #Your new position is {dictionary}
+        
                 
     def board_adjustment(self,old_position,new_position,player):
-        """Keeps track of where the players are on the board. 
+        """Keeps track of where the players are on the board. We will use 
+        dictionary comprehension (6/6) within this method.
+        Author: Allison Diveley
         
         Args:
             player (Player object): A player participating in the game.
+            old_position(string): Previous position of a single body part that is found on the board. Ex:green1
+            new_position(string): Players current position of a single body part that is found on the board. Ex:yellow6
             
         Side effects:
-            Adjusts the dictionary board.
+            Adjusts the board atttribute.
+            Prints the name of the player that has lost as well as the current position of their body parts.
         
         """
-                
-        {key: old_position == "" for key in self.board[new_position] if player.status == "eliminated"} # will remove the player from the board
-        # current position still updating even when the player does an ilegal move not sure how to fix.  
+              
+        remove_player = {key: "" for key in player.position if player.status == "eliminated"}
+        if player.status == "eliminated":
+            print (f'{player.name} has been removed from the board: {remove_player}\n') 
+      
       
         if player.status=="safe":                
             self.board[old_position]="open"
             self.board[new_position]="closed"
-        
+            
+
         
         if player.status=="eliminated":
-            self.board[old_position]="open"
-            self.board[new_position]="open"
-            print(self.board)
-            
+            self.board[player.position["right_foot"]]="open"
+            self.board[player.position["left_foot"]]="open"
+            self.board[player.position["right_hand"]]="open"
+            self.board[player.position["left_hand"]]="open"
 
 
+
             
-            
-            
-            
-        
-        
-        
-        
-        
-        
-        
-        
-        
 
 def main():
-    #Uses custom class composition.
+    """Runs the program using the turn method
+       Author: Allison Diveley
+       
+       Side effects:
+        Asks the user to input their name.
+        Prints the current state of the board using the board attribute.
+        Prints who has won the game. 
+        Prints if both players have lost the game. 
+    
+    """
+    
+    
+    
+    
+     
     boardcall = Board()
     name1 = input("Enter player1 name: ")
     name2 = input("Enter player2 name: ")
@@ -306,22 +338,19 @@ def main():
     
     while player1.status=="safe" and player2.status=="safe":
         player1.turn()
+        print(f'Here is the current state of the board: {boardcall.board}')
         player2.turn()
+        print(f'Here is the current state of the board: {boardcall.board}')
     if player1.status=="eliminated" and player2.status=="safe":
-             print(f"{name2} has won the game")
+             print(f"\n{name2} has won the game")
     else:
         if player1.status=="safe" and player2.status=="eliminated":
-            print(f"{name1} has won the game")
+            print(f"\n{name1} has won the game")
         else:
             if player1.status=="eliminated" and player2.status=="eliminated":
-                print(f"{name1} and {name2} have lost the game")
+                print(f"Both {name1} and {name2} have lost the game")
     
         
-                    
-        
-        
-        
-# we will be using composition for htis method
     
 
 if __name__ == "__main__":
